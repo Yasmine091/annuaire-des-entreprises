@@ -1,0 +1,52 @@
+#ann-nav {
+	display: flex;
+}
+
+#ann-nav form {
+    width: 100%;
+}
+
+@media (max-width: 906px){
+    #ann-nav {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 440px){
+    .ann-container {
+        display: flex;
+        flex-direction: column;
+    }
+    .ann-container input[type="submit"] {
+        margin-top: 8px;
+    }
+}
+
+.ann-container {
+	display: flex;
+}
+
+.ann-container select {
+	width: auto;
+	margin-right: 6px;
+}
+
+.ann-container input[type="search"] {
+	width: auto;
+	margin-right: 6px;
+}
+
+.ann-card {
+    display: inline-block;
+    padding: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.158);
+    width: 100%;
+    max-width: 18rem;
+    border-radius: 6px;
+}
+
+.ann-card li {
+    list-style: none;
+    font-size: 0.9rem;
+}
