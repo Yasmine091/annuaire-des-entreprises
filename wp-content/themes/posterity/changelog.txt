@@ -1,0 +1,18 @@
+= 2.2 =
+WordPress 5.6 compatibility. Gutenberg template added.
+
+= 2.1 =
+Added Search Bar Option In Header Settings  Tools icons - General settings.
+Implemented Documentation Link in theme description.
+
+= 2.0 =
+
+Resolved All Issues Given By Reviewer.
+
+= 1.1 =
+
+Resolved All Issues Given By Reviewer.
+
+= 1.0 =
+
+Initial release
