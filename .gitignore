@@ -2,7 +2,6 @@
 *.swp
 *.back
 *.bak
-*.sql
 *.sql.gz
 ~*
 
