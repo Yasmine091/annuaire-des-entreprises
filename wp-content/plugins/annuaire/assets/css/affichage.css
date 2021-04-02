@@ -50,3 +50,11 @@
     list-style: none;
     font-size: 0.9rem;
 }
+
+.ann-form-container {
+    display: flex;
+}
+
+.ann-form-container form {
+    display: block;
+}

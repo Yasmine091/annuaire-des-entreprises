@@ -27,33 +27,53 @@ function annuaire_menu()
         '', //plugin_dir_url(__FILE__) . 'assets/img/building.png', // icone
         4 // position dans le back office
     );
+
+    add_submenu_page(
+        __('Ajouter un annuaire'), // Titre de la page
+        __('Ajouter'), // Titre du menu
+        'manage_options', //le niveau de droits nécessaire pour y acceder
+        'ajouter-annuaire', // le slug de ma page
+        'ajout_annuaire_page', // fonction qui affiche ma page
+        '', //plugin_dir_url(__FILE__) . 'assets/img/building.png', // icone
+        4 // position dans le back office
+    );
 }
+
+function ajout_annuaire_page(){
+    include 'views/add.php';
+}
+
 
 function gestion_annuaire_page()
 {
-    ?>
-		<h1>
-			<?php esc_html_e( 'Welcome to my custom admin page.', 'my-plugin-textdomain' ); ?>
-		</h1>
-	<?php
+
+?>
+    <h1>Géstion des annuaires</h1>
+    <hr>
+    <?php include 'views/list.php';?>
+    <hr>
+            <?php include 'views/add.php';?>
+<?php
 }
 
 add_shortcode('annuaire', 'shortcode_annuaire');
-function shortcode_annuaire($atts, $content = null)
+function shortcode_annuaire()
 {
     $wpdb = $GLOBALS['wpdb'];
 
     if (isset($_POST['search'])) {
         $searchTerm = esc_attr__($_POST['terms']);
 
-        $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}annuaire
-        WHERE nom_entreprise REGEXP '$searchTerm'
-        OR localisation_entreprise REGEXP '$searchTerm'
-        OR prenom_contact REGEXP '$searchTerm'
-        OR nom_contact REGEXP '$searchTerm'", OBJECT);
+        $query = "SELECT * FROM {$wpdb->prefix}annuaire
+        WHERE nom_entreprise LIKE '%$searchTerm%'
+        OR localisation_entreprise LIKE '%$searchTerm%'
+        OR prenom_contact LIKE '%$searchTerm%'
+        OR nom_contact LIKE '%$searchTerm%'";
 
-    }
-    else if (isset($_POST['filter'])) {
+        $results = $wpdb->get_results($query, OBJECT);
+
+        //die($query);
+    } else if (isset($_POST['filter'])) {
         $filter = esc_attr__($_POST['filtre']);
 
         if ($filter === 'nom') {
@@ -64,16 +84,14 @@ function shortcode_annuaire($atts, $content = null)
         }
 
         if ($filter === null || $filter === '') {
-    
+
             $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}annuaire ORDER BY prenom_contact, nom_contact ASC", OBJECT);
         }
 
         $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}annuaire ORDER BY $filterBy ASC", OBJECT);
-    }
-    else {
+    } else {
         $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}annuaire ORDER BY prenom_contact, nom_contact ASC", OBJECT);
     }
-    
 
     ob_start();
 ?>
@@ -110,14 +128,16 @@ function shortcode_annuaire($atts, $content = null)
     <?php
     foreach ($results as $ann) {
     ?>
+
         <ul class="ann-card">
-            <li><b>Entreprise: </b><?php echo $ann->nom_entreprise; ?></li>
-            <li><b>Localisation: </b><?php echo $ann->localisation_entreprise; ?></li>
-            <li><b>Prénom: </b><?php echo $ann->prenom_contact; ?></li>
-            <li><b>Nom: </b><?php echo $ann->nom_contact; ?></li>
-            <li><b>Mail: </b><?php echo $ann->mail_contact; ?></li>
+            <li><b>Entreprise: </b><?= $ann->nom_entreprise; ?></li>
+            <li><b>Localisation: </b><?= $ann->localisation_entreprise; ?></li>
+            <li><b>Prénom: </b><?= $ann->prenom_contact; ?></li>
+            <li><b>Nom: </b><?= $ann->nom_contact; ?></li>
+            <li><b>Mail: </b><?= $ann->mail_contact; ?></li>
         </ul>
-<?php
+    <?php
     }
+
     return ob_get_clean();
 }
